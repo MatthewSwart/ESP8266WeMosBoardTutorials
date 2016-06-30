@@ -1,4 +1,4 @@
-# ESP8266WeMosBoard
+# ESP8266WeMosBoard Soft AP
 
 # Tutorial done by Matthew Swart
 
