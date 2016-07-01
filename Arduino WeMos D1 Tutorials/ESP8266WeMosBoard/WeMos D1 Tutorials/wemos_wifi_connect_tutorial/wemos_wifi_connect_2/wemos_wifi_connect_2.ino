@@ -1,17 +1,15 @@
 /*
- * For this tutorial I am going to connect through the world
- * wide web to control the LED. You will need to sort out 
- * port forwarding on your router at home and I suggest you
- * do that once you have decide which port you want to use.
- * When it comes to port forwarding the one thing you will 
- * need to keep in mind is that rule of thumb the first 1000
- * ports are generally off limits as they are considered 
- * reserved and you could land up causing other issues with 
- * your network if you happened to land up choosing one of 
- * one of those reserved ports. You will also notice later 
- * on that I am recycling code from my previous tutorial so 
- * if something looks out of place please contact me so that
- * I can make the changes.
+ *This part of the tutorial we going to set-up the LED that we are
+ *using to show the application is working over the internet. For
+ *this example I am using the tradition pin 13 LED which is on the 
+ *on the board for the WeMos this is called the BUILTIN_LED. First 
+ *under the ssid and pass declaration I declare and name the 
+ *BUILTIN_LED to make it a little easier. Then in the setup loop  
+ *I set the digital pin and make sure that the LED is set to off 
+ *at the beginning. Once that is done I start the server and 
+ *print that out on the serial monitor. Then I setup a printed
+ *statement so that the user can see the IP address allocated 
+ *to the WeMos board.
  */
 #include <ESP8266WiFi.h>
 
@@ -20,7 +18,12 @@ const char* ssid = "Your ssid here";//Declare ssid and use your
 const char* pass = "Your wifi paasword here";//Declared pass.
 //Enter your wifi password in here. 
 
-WiFiServer server(2171); //Initializing a port between 1000-65535 
+int ledPin = BUILTIN_LED;//Declare the GPIO for the LED. In this
+//case I am using the LED on the board to save me the hassle of
+//making up a circuit on a breadboard since I am sure you already
+//know how to do that.
+
+WiFiServer server(8080); //Initializing a port between 1000-65535 
 
 void setup() 
 {
@@ -47,6 +50,20 @@ void setup()
   }
   Serial.println("");
   Serial.println("WiFi connected!");
+
+  //Set the digital pin and then set the LED to off.
+  pinMode(ledPin, OUTPUT);
+  digitalWrite(ledPin, LOW);
+
+  // Start the server
+  server.begin();
+  Serial.println("Server started");
+ 
+  // Print the IP address
+  Serial.print("Use this URL : ");
+  Serial.print("http://");
+  Serial.print(WiFi.localIP());
+  Serial.println("/");
 }
 
 void loop() {
